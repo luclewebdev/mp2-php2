@@ -34,14 +34,17 @@ class ORM
 
                 foreach ($filteredProps as $prop){
 
-                    $fields = $fields.$prop;
-                    $values = $values.":".$prop;
+                    $fields = $fields.",".$prop;
+                    $values = $values.":".$prop.",";
 
                     $getter = "get".ucfirst($prop);
 
                     $toExecute[$prop]=$entityInstance->$getter();
 
                 }
+                $fields = substr($fields,1);
+                $values = substr($values,0, -1);
+
                     $paramsForPDO = [
                         "queryParams"=>"(".$fields.") VALUES (".$values.")",
                         "toExecute"=>$toExecute
