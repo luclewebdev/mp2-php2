@@ -24,6 +24,24 @@ public static function get(string $dataType, array $requestBodyParams){
         return Request::isSubmitted($dataType, $requestBodyParams);
 
     }
+    public static function put(string $dataType, array $requestBodyParams){
+
+        if( $_SERVER['REQUEST_METHOD'] != 'PUT' ){
+            return false;
+        }
+
+        return Request::isSubmitted($dataType, $requestBodyParams);
+
+    }
+    public static function delete(string $dataType, array $requestBodyParams){
+
+        if( $_SERVER['REQUEST_METHOD'] != 'DELETE' ){
+            return false;
+        }
+
+        return Request::isSubmitted($dataType, $requestBodyParams);
+
+    }
 
 
 // isSubmitted( datatype, requestBodyParams)
@@ -44,6 +62,12 @@ public static function get(string $dataType, array $requestBodyParams){
 
     public static function isSubmitted(string $dataType, array $requestBodyParams, string $get = null)
     {
+        if($dataType == "json"){
+
+            $requestBody = file_get_contents('php://input');
+
+            $requestParams = json_decode($requestBody, true);
+            }
 
 
 

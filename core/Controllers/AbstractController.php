@@ -27,6 +27,12 @@ class AbstractController
 
     }
 
+    public function json($responseToClient, ? string $specialMethod = null)
+    {
+        return \App\Response::json($responseToClient, $specialMethod);
+
+    }
+
     public function get(string $dataType, array $requestBodyParams)
     {
         return \App\Request::get($dataType, $requestBodyParams);

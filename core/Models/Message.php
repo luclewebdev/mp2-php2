@@ -7,7 +7,7 @@ namespace Models;
 
 
 
-class Message extends AbstractModel
+class Message extends AbstractModel implements \JsonSerializable
 {
 
  protected $tableName = "messages";
@@ -43,5 +43,24 @@ class Message extends AbstractModel
         $this->content = $content;
     }
 
+    public function getReponses()
+    {
 
+        $modelReponse = new \Models\Reponse();
+
+        $reponses = $modelReponse->findAllByMessage($this);
+
+        return $reponses;
+    }
+
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
+    {
+        return [
+            "id"=>$this->id,
+            "content"=>$this->content,
+            "reponses"=>$this->getReponses()
+        ];
+
+    }
 }

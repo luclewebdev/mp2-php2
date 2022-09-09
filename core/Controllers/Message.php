@@ -24,6 +24,14 @@ class Message extends AbstractController
         ]);
     }
 
+    public function indexApi(){
+
+
+        $messages = $this->defaultModel->findAll();
+
+        return $this->json($messages);
+    }
+
 
     public function show()
     {
@@ -93,6 +101,20 @@ class Message extends AbstractController
             "pageTitle" => 'Nouveau message'
         ]);
 
+
+    }
+
+    public function newApi(){
+        $request = $this->post("json",["content"=>"text"]);
+
+        if(!$request){return $this->json("requete non conforme, tchao");}
+
+        $message = new $this->defaultModel();
+        $message->setContent($request['content']);
+
+        $this->defaultModel->save($message);
+
+        return $this->json("OK");
 
     }
 
