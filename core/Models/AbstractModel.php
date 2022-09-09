@@ -8,20 +8,23 @@ namespace Models;
 
 
 
+use App\ORM;
+
 abstract class AbstractModel
 {
 
 
-    protected $pdo;
+    protected \PDO $pdo;
 
     protected $tableName;
 
-
+    protected ORM $orm;
 
     public function __construct()
     {
 
         $this->pdo = \Database\PdoMySQL::getPdo();
+        $this->orm = new ORM();
 
     }
 
@@ -62,15 +65,32 @@ abstract class AbstractModel
 
     }
 
-    public function delete(Message $message){
-
-
-
+    public function delete(Object $object){
 
         $requeteSuppr = $this->pdo->prepare("DELETE FROM {$this->tableName} WHERE id = :id");
 
-        $requeteSuppr->execute(["id"=>$message->getId()]);
+        $requeteSuppr->execute(["id"=>$object->getId()]);
     }
+
+    public function save(Object $object){
+
+        $params = $this->orm->getInsertOrUpdateParamsForPdo($object);
+
+        if(!$params['exists']){
+            //case insert
+            $sql = $this->pdo->prepare("INSERT INTO {$this->tableName} {$params['queryParams']}");
+        }else{
+            //case update
+
+            $sql = $this->pdo->prepare("UPDATE {$this->tableName} SET {$params['queryParams']} WHERE id=:id");
+
+
+        }
+
+        $sql->execute($params['toExecute']);
+        return $this->pdo->lastInsertId();
+    }
+
 
 
 }

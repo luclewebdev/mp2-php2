@@ -99,10 +99,6 @@ class Message extends AbstractController
     public function change()
     {
 
-
-
-
-
       $request = $this->post("form", ["content"=>"text", "id"=>"number"]);
 
 
@@ -112,7 +108,7 @@ class Message extends AbstractController
             $message->setContent($request['content']);
 
 
-            $this->defaultModel->edit($message);
+            $this->defaultModel->save($message);
 
 
             return $this->redirect([

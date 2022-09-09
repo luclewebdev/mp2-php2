@@ -18,6 +18,7 @@ class Message extends AbstractModel
 
 
 
+
     /**
      * @return int
      */
@@ -42,31 +43,5 @@ class Message extends AbstractModel
         $this->content = $content;
     }
 
-    public function save(Message $message)
-    {
 
-
-
-        $requete = $this->pdo->prepare("INSERT INTO {$this->tableName} (content) VALUES (:content)");
-
-        $requete->execute([
-            "content"=> $message->getContent()
-        ]);
-        $idMessage = $this->pdo->lastInsertId();
-
-        return $idMessage;
-    }
-
-    public function edit(Message $message ){
-
-
-
-
-        $requete = $this->pdo->prepare("UPDATE {$this->tableName} SET content = :content WHERE id = :message_id");
-
-        $requete->execute([
-            "content"=> $message->getContent(),
-            "message_id" => $message->getId()
-            ]);
-    }
 }
