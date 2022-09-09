@@ -28,9 +28,9 @@ class Message extends AbstractController
     public function show()
     {
 
-        $id=$_GET['id'];
+        $request = $this->get("form", ["id"=>"number"]);
 
-        $message = $this->defaultModel->find($id);
+        $message = $this->defaultModel->find($request['id']);
 
 
         return $this->render("message/show",[
@@ -42,26 +42,17 @@ class Message extends AbstractController
 
     public function remove()
 {
-                $id = null;
-
-                if(
-                    !empty($_GET['id'])
-                    &&
-                    ctype_digit($_GET['id'])
-
-                ) {
-                    $id=$_GET['id'];
-                }
-
-                if(!$id){
-                    return $this->redirect();
-
-                }
 
 
+    $request = $this->get("form", ["id"=>"number"]);
+
+    if(!$request){
+        return $this->redirect();
+
+    }
 
 
-    $message = $this->defaultModel->find($id);
+    $message = $this->defaultModel->find($request['id']);
 
     if($message){
         $this->defaultModel->delete($message);
@@ -78,18 +69,15 @@ class Message extends AbstractController
 
     public function new()
     {
-        $messageContent = null;
-
-        if(!empty($_POST['content'])){
 
 
-            $messageContent = htmlspecialchars($_POST['content']) ;
-        }
+        $request = $this->post("form",["content"=>"text"]);
 
-        if($messageContent){
+
+        if($request){
 
             $message = new \Models\Message();
-            $message->setContent($messageContent);
+            $message->setContent($request['content']);
 
             $idMessage = $this->defaultModel->save($message);
 
@@ -98,9 +86,6 @@ class Message extends AbstractController
                                     "id"=>$idMessage]);
 
         }
-
-
-
 
 
 
@@ -114,30 +99,24 @@ class Message extends AbstractController
     public function change()
     {
 
-        $id=$_GET['id'];
 
-
+     $id =   $_GET['id'];
 
 
         $message = $this->defaultModel->find($id);
 
 
-        if(!$message)
+        if(!$message || !$id)
         {
             return $this->redirect();
         }
 
-        $messageContent = null;
-
-        if(!empty($_POST['content'])){
+      $request = $this->post("form", ["content"=>"text"]);
 
 
-            $messageContent = htmlspecialchars($_POST['content']) ;
-        }
+        if($request){
 
-        if($messageContent){
-
-            $message->setContent($messageContent);
+            $message->setContent($request['content']);
 
 
             $this->defaultModel->edit($message);
@@ -151,9 +130,6 @@ class Message extends AbstractController
 
 
         }
-
-
-
 
 
         return $this->render("message/edit",[

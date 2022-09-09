@@ -27,7 +27,14 @@ class AbstractController
 
     }
 
-
+    public function get(string $dataType, array $requestBodyParams)
+    {
+        return \App\Request::get($dataType, $requestBodyParams);
+    }
+    public function post(string $dataType, array $requestBodyParams)
+    {
+        return \App\Request::post($dataType, $requestBodyParams);
+    }
 
 
 }

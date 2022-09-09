@@ -17,6 +17,7 @@ class Message extends AbstractModel
     private string $content;
 
 
+
     /**
      * @return int
      */
