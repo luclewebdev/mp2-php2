@@ -59,7 +59,7 @@ public static function get(string $dataType, array $requestBodyParams){
 
         }
 
-        $results = false;
+        $results = [];
 
             foreach ($requestBodyParams as $param => $paramDataType)
             {
@@ -88,7 +88,7 @@ public static function get(string $dataType, array $requestBodyParams){
 
             }
 
-
+        if($results === [])return false;
         return $results; // uniquement un tableau valide de parametres a enregistrer dans la DB
     }
 

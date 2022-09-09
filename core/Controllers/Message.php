@@ -100,22 +100,15 @@ class Message extends AbstractController
     {
 
 
-     $id =   $_GET['id'];
 
 
-        $message = $this->defaultModel->find($id);
 
-
-        if(!$message || !$id)
-        {
-            return $this->redirect();
-        }
-
-      $request = $this->post("form", ["content"=>"text"]);
+      $request = $this->post("form", ["content"=>"text", "id"=>"number"]);
 
 
         if($request){
-
+            var_dump($request);
+            $message = $this->defaultModel->find($request['id']);
             $message->setContent($request['content']);
 
 
@@ -131,6 +124,15 @@ class Message extends AbstractController
 
         }
 
+        $requestForId = $this->get('form',['id'=>'number']);
+
+        $message = $this->defaultModel->find($requestForId['id']);
+
+
+        if(!$message || !$requestForId)
+        {
+            return $this->redirect();
+        }
 
         return $this->render("message/edit",[
             "pageTitle" => "Editer le message n°{$message->getId()}",
