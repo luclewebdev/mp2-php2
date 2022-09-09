@@ -107,7 +107,7 @@ class Message extends AbstractController
 
 
         if($request){
-            var_dump($request);
+
             $message = $this->defaultModel->find($request['id']);
             $message->setContent($request['content']);
 
